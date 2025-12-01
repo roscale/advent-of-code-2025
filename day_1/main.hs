@@ -6,9 +6,9 @@ main = do
   print $ part1 list
   print $ part2 list
 
-rotations = map (convert . splitAt 1) . lines
+rotations = map (parseDist . splitAt 1) . lines
   where
-    convert (dir, dist) = (dir, read dist)
+    parseDist (dir, dist) = (dir, read dist)
 
 part1 list = length pointing_at_0
   where
