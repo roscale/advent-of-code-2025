@@ -1,0 +1,24 @@
+rotations = map (convert . splitAt 1) . lines
+  where
+    convert (dir, dist) = (dir, read dist)
+
+turn pos (dir, dist) = pos + dist * vec
+  where
+    vec = case dir of
+      "L" -> -1
+      "R" -> 1
+
+part1 list = length pointing_at_0
+  where
+    turns = scanl turn 50 list
+    pointing_at_0 = filter (\x -> x `mod` 100 == 0) turns
+
+part2 list =
+  part1 $ concatMap (\(dir, dist) -> replicate dist (dir, 1)) list
+
+main = do
+  input <- readFile "input.txt"
+  let list = rotations input
+
+  print $ part1 list
+  print $ part2 list
