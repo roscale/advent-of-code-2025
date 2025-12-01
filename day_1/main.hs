@@ -10,10 +10,10 @@ rotations = map (parseDist . splitAt 1) . lines
   where
     parseDist (dir, dist) = (dir, read dist)
 
-part1 list = length pointing_at_0
+part1 list = length pointingAtZero
   where
     turns = scanl turn 50 list
-    pointing_at_0 = filter (\x -> x `mod` 100 == 0) turns
+    pointingAtZero = filter (\x -> x `mod` 100 == 0) turns
 
 turn pos (dir, dist) = pos + dist * vec
   where
