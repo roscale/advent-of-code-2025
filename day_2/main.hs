@@ -1,20 +1,18 @@
 import Data.List.Extra
 
-parse :: String -> [Int]
-parse = concatMap (toRange . splitOn "-") . splitOn ","
+expandRanges :: String -> [String]
+expandRanges = concatMap (expandRange . splitOn "-") . splitOn ","
   where
-    toRange [a, b] = [read a .. read b]
+    expandRange [a, b] = map show [read a :: Int .. read b]
 
-isInvalid :: Int -> Bool
-isInvalid id = uncurry (==) $ splitAt (length idStr `div` 2) idStr
-  where
-    idStr = show id
+isInvalid :: String -> Bool
+isInvalid id = uncurry (==) $ splitAt (length id `div` 2) id
 
-part1 = sum . filter isInvalid
+part1 = sum . map read . filter isInvalid
 
 main = do
   input <- readFile "input.txt"
 
-  let ids = parse input
+  let ids = expandRanges input
 
   print $ part1 ids
