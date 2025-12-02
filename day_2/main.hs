@@ -9,16 +9,19 @@ main = do
   print $ part2 ids
 
 expandRanges :: String -> [String]
-expandRanges = concatMap (expandRange . splitOn "-") . splitOn ","
+expandRanges id = concatMap (expandRange . splitOn "-") $ splitOn "," id
   where
     expandRange [a, b] = map show [read a :: Int .. read b]
 
-invalidSum predicate = sum . map read . filter predicate
+invalidSum :: (String -> Bool) -> [String] -> Int
+invalidSum predicate ids = sum $ map read $ filter predicate ids
 
+part1 :: [String] -> Int
 part1 = invalidSum repeatedTwice
   where
     repeatedTwice id = uncurry (==) $ splitAt (length id `div` 2) id
 
+part2 :: [String] -> Int
 part2 = invalidSum repeated
   where
     repeated id = any repeating (chunks id)
