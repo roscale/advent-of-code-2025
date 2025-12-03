@@ -12,6 +12,6 @@ part1 banks = sum $ map joltage banks
 
 joltage bank = battery1 * 10 + battery2
   where
-    battery1 = maximum (init bank)
-    battery1Index = elemIndexJust battery1 (init bank)
+    battery1 = maximum $ init bank
+    battery1Index = elemIndexJust battery1 $ init bank
     battery2 = maximum $ drop (battery1Index + 1) bank
