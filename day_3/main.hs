@@ -1,5 +1,6 @@
 import Data.Char
 import Data.List
+import Data.Tuple.Extra
 import Safe
 
 main = do
@@ -7,11 +8,19 @@ main = do
   let banks = map (map digitToInt) (lines list)
 
   print $ part1 banks
+  print $ part2 banks
 
-part1 banks = sum $ map joltage banks
+part1 banks = sum $ map (joltage 2) banks
 
-joltage bank = battery1 * 10 + battery2
+part2 banks = sum $ map (joltage 12) banks
+
+joltage n bank = cat batteries
   where
-    battery1 = maximum $ init bank
-    battery1Index = elemIndexJust battery1 $ init bank
-    battery2 = maximum $ drop (battery1Index + 1) bank
+    cat = foldl (\acc b -> acc * 10 + b) 0
+    batteries = map fst3 $ take n $ drop 1 $ iterate nextBattery (-1, bank, n)
+
+nextBattery (battery, slice, n) = (b, s, n - 1)
+  where
+    b = maximum $ take (length slice - n + 1) slice
+    i = elemIndexJust b $ init slice
+    s = drop (i + 1) slice
