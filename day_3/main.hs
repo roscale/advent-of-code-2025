@@ -17,7 +17,7 @@ part2 banks = sum $ map (joltage 12) banks
 joltage n bank = cat batteries
   where
     cat = foldl (\acc b -> acc * 10 + b) 0
-    batteries = map fst3 $ take n $ drop 1 $ iterate nextBattery (-1, bank, n)
+    batteries = map fst3 $ take n $ tail $ iterate nextBattery (-1, bank, n)
 
 nextBattery (battery, slice, n) = (b, s, n - 1)
   where
