@@ -5,7 +5,7 @@ main = do
   let width = length (head list)
   let elements = concat list
 
-  let rolls = fromList $ fmap fst $ Prelude.filter (\t -> snd t == '@') $ zip (enumerate (width, elements)) elements
+  let rolls = fromList $ fmap fst $ Prelude.filter (\e -> snd e == '@') $ zip (enumerate (width, elements)) elements
 
   print $ part1 rolls
   print $ part2 rolls
