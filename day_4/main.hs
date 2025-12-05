@@ -1,30 +1,23 @@
-import Safe
+import Data.Set
 
 main = do
   list <- lines <$> readFile "input.txt"
-  let grid = (length (head list), concat list)
+  let width = length (head list)
+  let elements = concat list
 
-  print $ part1 grid
+  let rolls = fromList $ fmap fst $ Prelude.filter (\t -> snd t == '@') $ zip (enumerate (width, elements)) elements
 
-part1 grid = length $ filter (forkliftable grid) $ enumerate grid
+  print $ part1 rolls
 
-forkliftable grid (row, col) = isRoll grid (row, col) && rollsAround <= 4
+part1 rolls = length $ Data.Set.filter (forkliftable rolls) rolls
+
+forkliftable rolls (row, col) = rollsAround <= 4
   where
-    isRoll grid (row, col) = get grid (row, col) == Just '@'
-    rollsAround = length $ filter (== Just '@') surroundings
-    surroundings = subGrid grid (row - 1, row + 1, col - 1, col + 1)
+    rollsAround = length $ rolls `intersection` surroundings
+    surroundings = subGrid (row - 1, row + 1, col - 1, col + 1)
 
-type Grid a = (Int, [a])
-
-get :: Grid a -> (Int, Int) -> Maybe a
-get (width, array) (row, col)
-  | row >= 0 && row < width && col >= 0 && col < height = array `atMay` (row * width + col)
-  | otherwise = Nothing
-  where
-    height = length array `div` width
+enumerate (width, array) = fmap (coords width) [0 .. length array - 1]
 
 coords width i = (i `div` width, i `mod` width)
 
-enumerate (width, array) = map (coords width) [0 .. length array - 1]
-
-subGrid grid (start_row, end_row, start_col, end_col) = [get grid (i, j) | i <- [start_row .. end_row], j <- [start_col .. end_col]]
+subGrid (start_row, end_row, start_col, end_col) = fromList [(i, j) | i <- [start_row .. end_row], j <- [start_col .. end_col]]
