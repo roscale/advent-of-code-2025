@@ -5,8 +5,7 @@ import Data.List.Split
 
 main = do
   input <- readFile "input.txt"
-  let matrix = lines input
-  let problems = getProblems matrix
+  let problems = getProblems $ lines input
 
   print $ part1 problems
   print $ part2 problems
