@@ -13,9 +13,9 @@ main = do
   print $ part1 height start splittersSet
   print $ part2 height start splittersSet
 
-enumerate2D width = Prelude.map (coords width) [0 ..]
+enumerate2D width = Prelude.map coords [0 ..]
   where
-    coords width i = (i `div` width, i `mod` width)
+    coords i = (i `div` width, i `mod` width)
 
 part1 height start splitters = fst $ simulate height start splitters
 
