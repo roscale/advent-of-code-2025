@@ -17,12 +17,11 @@ enumerate2D width = Prelude.map (coords width) [0 ..]
   where
     coords width i = (i `div` width, i `mod` width)
 
-part1 :: Int -> (Int, Int) -> Set (Int, Int) -> Int
 part1 height start splitters = fst $ simulate height start splitters
 
-part2 :: Int -> (Int, Int) -> Set (Int, Int) -> Int
 part2 height start splitters = sum $ Data.Map.elems $ snd $ simulate height start splitters
 
+simulate :: Int -> (Int, Int) -> Set (Int, Int) -> (Int, Map (Int, Int) Int)
 simulate height start splitters = last $ Prelude.take height $ iterate (advanceBeams splitters) initialState
   where
     initialState = (0, Data.Map.fromList [(start, 1)])
